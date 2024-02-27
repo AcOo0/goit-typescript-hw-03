@@ -22,11 +22,7 @@ openDoor у цьому класі. Якщо ключ, переданий цьо�
 */
 
 class Key {
-    private signature: number;
-
-    constructor() {
-    this.signature = Math.random();
-    }
+    private signature: number = Math.random();
 
     getSignature(): number {
     return this.signature;
@@ -34,10 +30,8 @@ class Key {
 }
 
 class Person {
-    private key: Key;
 
-    constructor(key: Key) {
-        this.key = key;
+    constructor(private key: Key) {
     }
 
     getKey(): Key {
@@ -46,17 +40,14 @@ class Person {
 }
 
 abstract class House {
-    door: boolean;
-    key: Key;
+    protected door: boolean = false;
+    private tenants: Person[] = [];
 
-    constructor(key: Key) {
-        this.door = false;
-        this.key = key;
-    }
+    constructor(protected key: Key) {}
 
     comeIn(person: Person): void {
         if (this.door) {
-            console.log("Welcome")
+            this.tenants.push(person);
         }
     }
 
@@ -64,7 +55,7 @@ abstract class House {
 }
 
 class MyHouse extends House {
-    openDoor(key: Key) {
+    openDoor(key: Key): void {
         if (key.getSignature() === this.key.getSignature()) {
             this.door = true;
         }
